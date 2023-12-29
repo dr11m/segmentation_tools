@@ -120,7 +120,7 @@ class estimator:
             plot_data = self.segments[i].data[:,0]
             plt.plot(np.arange(k,k+len(plot_data)),plot_data, colors[i%2])
             k = len(plot_data) + k
-        plt.show
+        plt.show()
     
     def create_segment(self,data):
         return segment(data,self.calculate_error(data))

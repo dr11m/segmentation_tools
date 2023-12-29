@@ -218,6 +218,7 @@ class top_down(estimator,plr):
                 best_so_far = improvement_in_approximation
                 break_point = i
         
+        print(self.calculate_error(data[:break_point]))
         if self.calculate_error(data[:break_point]) > max_error and len(data[:break_point]) > 2:
             self.top_down_split(data[:break_point],max_error)             
         else: 
@@ -290,10 +291,11 @@ class bottom_up(estimator,plr):
         for i in range(0,len(data)-2,2):
             self.segments.append(self.create_segment(data[i:i+2]))
         
-        merge_cost = np.zeros(len(self.segments)-1)        
+        merge_cost = np.zeros(len(self.segments)-1)     
         for i in range(len(self.segments)-1):
             merge_cost[i] = self.calculate_error(
                 np.concatenate((self.segments[i].data,self.segments[i+1].data)))
+        print(f"merge cosrt: {merge_cost}")
         
         while True:
             try: 
@@ -349,6 +351,7 @@ class sliding_window(estimator,plr):
         k = 0
         while not finished:    
             i = 2
+            print(self.calculate_error(data[anchor:anchor + i]))
             while self.calculate_error(data[anchor:anchor + i]) < max_error and anchor + i <= len(data):
                 i += 1
             self.segments.append(self.create_segment(data[anchor:anchor + i -1]))
@@ -392,8 +395,8 @@ class SWAB(estimator,plr):
         i = 0
         j = 0
         self.segment_borders.append(0)
-        while  i+100 < len(data):
-            buffer = data[i:i+100]
+        while  i+buffer_size < len(data):
+            buffer = data[i:i+buffer_size]
             bottom_up_estimator = bottom_up()
             bottom_up_estimator.fit(buffer,max_error,plr)
             left_segment = bottom_up_estimator.segments[0].data

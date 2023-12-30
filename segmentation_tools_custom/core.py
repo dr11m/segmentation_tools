@@ -287,7 +287,7 @@ class bottom_up(estimator,plr):
 
         """
         estimator.fit(self,data,max_error,plr,error_type)
-                       
+        print(f"max error bottom up: {max_error}")
         for i in range(0,len(data)-2,2):
             self.segments.append(self.create_segment(data[i:i+2]))
         
@@ -391,6 +391,7 @@ class SWAB(estimator,plr):
         None.
 
         """
+        print(f"max_error {max_error}")
         estimator.fit(self,data,max_error,plr,error_type)
         i = 0
         j = 0
